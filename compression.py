@@ -1,11 +1,12 @@
 import os 
+import random
 
-def create_directory():
+def create_directory(newdir):
  	# Create a new directory 
 	path = os.getcwd()
 	print("The current working directory is %s" %path)
 
-	path = path + "/compressed"
+	path = path + "/" + newdir 
 	print("The new directory that will be created is %s" %path)
 
 	try: 
@@ -21,11 +22,19 @@ def create_directory():
 	for idx in range(len(files)): 
 		oldname = files[idx]				#uncompressed filename
 		filename = path + "/" + oldname		#compressed filename
-		oldfile = open(oldname)
+		
 		newfile = open(filename)
-		remove_texture_and_face(newfile, oldfile)
+		newfile.close()
 
-def remove_texture_and_face(newfile, oldfile): 
+		if newdir == "rmvlComp": 
+			remove_texture_and_face(newfile, oldfile)
+		elif newdir == "compressed": 
+			reduce_vertices(newfile, oldfile)
+
+def remove_texture_and_face(newfilename, oldfilename): 
+	oldfile = open(oldfilename)
+	newfile = open(newfilename)
+
 	lines = oldfile.readlines()
 	for line in lines: 
 		if line[0] == "v": 
@@ -33,5 +42,49 @@ def remove_texture_and_face(newfile, oldfile):
 				#skip line
 			newfile.write(line)
 
-create_directory() 
+	newfile.close()
+	oldfile.close()
 
+def reduce_vertices(newfilename, oldfilename):
+	oldfile = open(oldfilename)
+	newfile = open(newfilename)
+
+	lines = oldfile.readlines() 
+	for line in lines: 
+		#Check line includes vertices
+		if line[0] != "v" or line[1] ! = " ": 
+			break
+
+		lineVars = line.split()
+
+		x = lineVars[1]
+		y = lineVars[2]
+		z = lineVars[3]
+
+		weights = calculate_vals(x, y, z)
+
+		w1 = weights[0]
+		w2 = weights[1]
+		w3 = weights[2]
+
+		encodedData = w1 * x + w2 * y + w3 * z 
+
+		newfile.write(encodedData)
+
+	newfile.close()
+	oldfile.close()
+
+
+def calculate_vals(x, y, z): 
+	f = 3
+	m = max(x, y, z) = (max(x, y, z) / 2)
+	w1 = random.uniform(0,1)
+	w2 = (w1 + m) + f 
+	w3 = (m * w1 + m * w2) * f
+
+	return (w1, w2, w3)
+
+
+create_directory("/rmvlComp")
+os.chdir(os.getcwd() + "/rmvlComp")
+create_directory("/compressed") 
