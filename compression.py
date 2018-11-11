@@ -1,5 +1,6 @@
 import os 
 import random
+from huffman import HuffmanCoding
 
 def create_directory(newdir):
  	# Create a new directory 
@@ -24,35 +25,61 @@ def create_directory(newdir):
 		newfilename = newpath + "/" + oldname		#compressed file path
 		oldfilename = path + "/" + oldname
 		
-		newfile = open(newfilename, "w")
-		newfile.close()
+		if newdir != "huffCompressed": 
+			newfile = open(newfilename, "w")
+			newfile.close()
 
 		if newdir == "rmvlComp": 
 			remove_texture_and_face(newfilename, oldfilename)
+			tfFileName = newpath + "/textureFace.obj"
+			texture_face_file(tfFileName, oldfilename)
 		elif newdir == "compressed": 
 			reduce_vertices(newfilename, oldfilename)
+		elif newdir == "huffCompressed": 
+			huffman_encoding(oldfilename)
 
 def remove_texture_and_face(newfilename, oldfilename): 
+	print("Removing Redundant Information...")
 	oldfile = open(oldfilename)
-	print("Opening old %s" %oldfilename)
 	newfile = open(newfilename, "w")
-	print("Opening new %s" %newfilename)
 
 	lines = oldfile.readlines()
-	print("Lines")
-	print(lines)
 
 	for line in lines: 
-		print(line)
 		if line[0] == "v": 
-			print("Line starts with v \n")
 			if line[1] == " ": 
-				print("Line is vertext line \n")
 				newfile.write(line)
 
 	newfile.close()
 	oldfile.close()
 
+def texture_face_file(tfFileName, oldfilename): 
+	print("Saving Repeated Info...")
+	oldfile = open(oldfilename)
+	tfFile = open(tfFileName, "w")
+
+	lines = oldfile.readlines()
+	for line in lines: 
+		if line[0] == "v": 
+			if line [1] == "t": 
+				tfFile.write(line)
+	 	elif line[0] == "f": 
+	 		tfFile.write(line)
+
+	oldfile.close()
+	tfFile.close() 
+
+def huffman_encoding(filename):
+	print("Huffman Encoding...")
+	h = HuffmanCoding(filename)
+	output_path = h.compress()
+	#print(output_path)
+	h.decompress(output_path)
+
+#def base_62_encoding(): 
+
+
+"""
 def reduce_vertices(newfilename, oldfilename):
 	oldfile = open(oldfilename)
 	#print("Opening %s" %oldfilename)
@@ -94,8 +121,11 @@ def calculate_vals(x, y, z):
 	w3 = (m * w1 + m * w2) * f
 
 	return (w1, w2, w3)
+"""
 
 #reduce_vertices()
 create_directory("rmvlComp")
 os.chdir(os.getcwd() + "/rmvlComp")
-create_directory("compressed") 
+create_directory("huffCompressed")
+
+#create_directory("compressed") 
