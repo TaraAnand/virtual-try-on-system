@@ -73,7 +73,8 @@ def huffman_encoding(filename):
 	#print("Huffman Encoding...")
 	h = HuffmanCoding(filename)
 	output_path = h.compress()
-	#h.decompress(output_path)
+	#print(output_path)
+	h.decompress(output_path)
 
 #def base_62_encoding(): 
 
@@ -126,4 +127,5 @@ def calculate_vals(x, y, z):
 create_directory("rmvlComp")
 os.chdir(os.getcwd() + "/rmvlComp")
 create_directory("huffCompressed")
+
 #create_directory("compressed") 

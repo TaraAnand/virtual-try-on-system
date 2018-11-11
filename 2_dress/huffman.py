@@ -169,5 +169,5 @@ class HuffmanCoding:
 			
 			output.write(decompressed_text)
 
-		print("Decompressed")
+		#print("Decompressed")
 		return output_path
