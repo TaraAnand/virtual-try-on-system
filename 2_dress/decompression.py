@@ -15,7 +15,6 @@ def directory_iterator():
 	tfLines = tfFile.readlines()
 	
 
-	print(len(files))
 	for idx in range(len(files)): 
 	
 
