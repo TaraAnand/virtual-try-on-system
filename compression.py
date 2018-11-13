@@ -125,7 +125,7 @@ def calculate_vals(x, y, z):
 
 #reduce_vertices()
 create_directory("rmvlComp")
-os.chdir(os.getcwd() + "/rmvlComp")
-create_directory("huffCompressed")
+#os.chdir(os.getcwd() + "/rmvlComp")
+#create_directory("huffCompressed")
 
 #create_directory("compressed") 

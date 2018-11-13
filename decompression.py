@@ -7,9 +7,11 @@ def directory_iterator():
 	path = cwd + "/rmvlComp"
 	os.chdir(path)
 
-	files = [name for name in os.listdir('.') if os.path.isfile(name) and name.endswith("_decompressed.obj")]
-
-	tfFilename = path  + "/textureFace_decompressed.obj"
+	#files = [name for name in os.listdir('.') if os.path.isfile(name) and name.endswith("_decompressed.obj")]
+	files = [name for name in os.listdir('.') if os.path.isfile(name) and name.endswith(".obj")]
+	
+	#tfFilename = path  + "/textureFace_decompressed.obj"
+	tfFilename = path + "/textureFace.obj"
 
 	tfFile = open(tfFilename)
 	tfLines = tfFile.readlines()
@@ -21,12 +23,12 @@ def directory_iterator():
 		filename = files[idx] 
 
 		huffFile = open(filename)
+		print("Opening %s" %filename)
 
 		huffLines = huffFile.readlines()
 		
-
-
-		newfilename = filename.replace("_decompressed.obj", "_FullDecompressed.obj")
+		#newfilename = filename.replace("_decompressed.obj", "_FullDecompressed.obj")
+		newfilename = filename.replace(".obj", "_FullDecompressed.obj")
 		#filepath = newfilename
 		newfile = open(newfilename, "w")
 		
